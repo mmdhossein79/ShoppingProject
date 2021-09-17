@@ -61,8 +61,8 @@ def user_login(request):
 
 
 
-def edit_profile(request):
-    std = get_object_or_404(User, id=request.user.id)
+def edit_profile(request,user_id):
+    std = get_object_or_404(User, id=user_id)
     form = EditProfile(instance=std)
     if request.method == 'POST':
         form = EditProfile(request.POST, instance=std)

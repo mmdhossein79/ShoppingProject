@@ -8,6 +8,6 @@ urlpatterns = [
     path('register/', register_form, name='register'),
     path('login/', user_login, name='login'),
     path('profile/<int:user_id>', profile, name='profile'),
-    path('edit/', edit_profile, name='edit'),
+    path('edit/<int:user_id>', edit_profile, name='edit'),
     path('logout/', LogoutView.as_view(next_page=reverse_lazy('customer:home')), name='logout'),
 ]

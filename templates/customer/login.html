@@ -43,7 +43,7 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-            <form style="padding: 10px;border: solid 1px #d9d9d9;border-radius:5px" action="{% url 'customer:login' %}" method="post" enctype="multipart/form-data">
+            <form style="padding: 10px;border: solid 1px #d9d9d9;border-radius:5px" action="{% url 'customer:login'  %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <button class="btn but" style="width:100%" type="submit" name="login" value="Login">Login
