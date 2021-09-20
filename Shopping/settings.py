@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'order',
+    'cart',
     'product',
     'customer',
     'rest_framework',
@@ -138,7 +139,7 @@ else:
     ]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'products/')
 AUTH_USER_MODEL = 'customer.User'
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 REST_FRAMEWORK = {
