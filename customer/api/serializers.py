@@ -14,17 +14,19 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Register Serializer
 class RegisterSerializer(serializers.ModelSerializer):
+    # confirm_password = serializers.CharField()
     class Meta:
         model = User
-        fields = ('id', 'username','phone', 'email', 'password', 'first_name', 'last_name', 'user_type')
+        fields = ('id' ,'username','phone', 'email', 'password', 'first_name', 'last_name','user_type')
         extra_kwargs = {'password': {'write_only': True}}
+
+    # def clean(self):
+    #     self.data['password']
 
     def create(self, validated_data):
         user = User(username=validated_data['username'],phone=validated_data['phone'], email=validated_data['email'],
-                    first_name=validated_data['first_name'], last_name=validated_data['last_name'],
-                    user_type=validated_data['user_type'], password=validated_data['password'])
+                    first_name=validated_data['first_name'], last_name=validated_data['last_name']
+                    , password=validated_data['password'])
         user.set_password(validated_data['password'])
         user.save()
         return user
-
-

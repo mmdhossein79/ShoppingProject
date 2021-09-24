@@ -1,13 +1,15 @@
 from django import forms
-from django.core.exceptions import ValidationError
+
 from .models import User
 from .vars import USER_TYPE_CHOICES, USER_TYPE, USERNAME, PASSWORD
 
 
 class UserForms(forms.ModelForm):
+    # confirm_password = forms.CharField(widget=forms.PasswordInput)
+
     class Meta:
         model = User
-        fields = ['username','phone', 'email', 'first_name', 'last_name', 'password', 'user_type']
+        fields = ['username', 'phone', 'email', 'first_name', 'last_name', 'password',  ]
 
 
 class UserLogin(forms.Form):
@@ -18,7 +20,6 @@ class UserLogin(forms.Form):
         choices=USER_TYPE_CHOICES,
         label=USER_TYPE
     )
-
 
 class EditProfile(forms.ModelForm):
     NewPassword = 'NewPassword '

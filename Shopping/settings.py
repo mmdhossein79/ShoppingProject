@@ -72,7 +72,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
             ],
+
         },
     },
 ]
@@ -139,7 +141,9 @@ else:
     ]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'products/')
+MEDIA_ROOT = (
+    os.path.join(BASE_DIR, 'media')
+)
 AUTH_USER_MODEL = 'customer.User'
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 REST_FRAMEWORK = {
@@ -152,3 +156,4 @@ REST_FRAMEWORK = {
 }
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+CART_SESSION_ID = 'keranjang'

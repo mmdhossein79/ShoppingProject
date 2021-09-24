@@ -16,7 +16,7 @@ class CustomUserManager(BaseUserManager):
             phone=phone,
             username=username,
         )
- 
+
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -57,7 +57,7 @@ class User(AbstractUser):
         (CUSTOMER, 'مشتری'),
         (EMPLOYEE, 'کارمند'),
     ]
-    user_type = models.CharField(max_length=600, choices=USER_TYPE_CHOICES, null=False, blank=False)
+    user_type = models.CharField(max_length=600, choices=USER_TYPE_CHOICES, default=CUSTOMER, null=False, blank=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'phone', 'first_name', 'last_name', 'user_type']
     objects = CustomUserManager()
@@ -79,7 +79,6 @@ class User(AbstractUser):
 
     def promoteUserToDepartmentAdmin(self):
         self.is_staff = True
-        self.is_department_admin = True
 
 
 class Address(models.Model):

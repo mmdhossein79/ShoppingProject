@@ -1,12 +1,12 @@
-from django.conf.urls import url
-from . import views
+from .views import HomeView, AllProductsView, ProductDetailView, SearchView
+from django.urls import path, reverse_lazy
+from django.contrib.auth.views import LogoutView
 
-app_name = 'shop'
+app_name = 'product'
 
 urlpatterns = [
-    url(r'^$', views.product_list, name='product_list'),
-    url(r'^(?P<category_slug>[-\w]+)/$',
-        views.product_list, name='product_list_by_category'),
-    url(r'^(?P<id>\d+)/(?P<slug>[-\w]+)/$',
-        views.product_detail, name='product_detail'),
+    path("", HomeView.as_view(), name="home"),
+    path("all-products/", AllProductsView.as_view(), name="allproducts"),
+    path("product/<slug:slug>/", ProductDetailView.as_view(), name="productdetail"),
+    path("search/", SearchView.as_view(), name="search"),
 ]
