@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'order',
-    'cart',
     'product',
     'customer',
     'rest_framework',
@@ -72,7 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'cart.context_processors.cart',
+
             ],
 
         },
@@ -156,4 +155,3 @@ REST_FRAMEWORK = {
 }
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
-CART_SESSION_ID = 'keranjang'

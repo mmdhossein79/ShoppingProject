@@ -1,29 +1,12 @@
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.urls import reverse
-from django.views import generic
-from django.db.models import F
-from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect
-
-from order.models import Order, Cart
+from order.models import Order
 from .forms import UserForms, UserLogin, EditProfile
-from .models import User
-import django.contrib.auth
-from django.contrib.auth.decorators import user_passes_test
-
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views import generic
-from rest_framework import viewsets, generics
-
 from .models import User
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import Group
 from django.contrib import messages
 from .vars import *
-from django.contrib.auth.views import LogoutView
+
 
 
 # Create your views here.
