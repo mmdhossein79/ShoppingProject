@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'core',
     'knox',
     'crispy_forms',
+    'django_rest_passwordreset',
 ]
 
 MIDDLEWARE = [
