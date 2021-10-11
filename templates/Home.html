@@ -2,14 +2,16 @@
 {% load static %}
 {% block content %}
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
     <script>
-        $.ajax({
+    function get_product(url){
+                $.ajax({
             method: 'GET',
-            url: "http://127.0.0.1:8000/api-auth/product/",
+            url: url,
             success: function (data) {
                 console.log('success');
                 console.log(data)
-                for (const obj of data) {
+                for (const obj of data.results) {
                         let product_name = obj.title;
                         let category = obj.category;
                         let initial_price = obj.marked_price;
@@ -25,7 +27,33 @@
                                        <a href=${url} class="btn btn-primary">Add To Cart</a>
                                     </div>
                             </div>`;
-                        $('.product-container').append(card)
+                        $('.product-container').html(card)
+
+                    if (data.next){
+
+                        let next_page = $('<button/>',{
+                            text : 'next_page',
+                            click : function (){
+                                get_product(data.next)
+                            }
+                        })
+
+                        $('.product-container').append(next_page)
+
+                    }
+
+                    if (data.previous){
+
+                        let previous_page = $('<button/>',{
+                            text : 'previous_page',
+                            click : function (){
+                                get_product(data.previous)
+                            }
+                        })
+
+                        $('.product-container').append(previous_page)
+
+                    }
                     }
 
 
@@ -35,23 +63,11 @@
             }
         })
 
+
+    }
+get_product('http://127.0.0.1:8000/api-auth/product/')
     </script>
-    <div class="row " style="margin-top:50px">
-        <div class="swiper mySwiper " style="height:250px;margin:20px;border-radius: 15px">
-            <div class="swiper-wrapper">
-                {% for p in product_list %}
-                    <div class="swiper-slide">
-                        <h4><a href="{% url 'product:productdetail' p.slug %}">{{ p.title }}</a></h4><br>
-                        <img src="{{ p.image.url }}" alt="" class="img-fluid"
-                             style="height: 200px; object-fit: contain;">
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
-        </div>
-    </div>
+
     <div class="container-fluid">
         <hr>
         <div class="row mt-3 product-container" id="product-container">

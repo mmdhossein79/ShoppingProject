@@ -1,7 +1,7 @@
 import json
 from django.test import TestCase
 from django.urls import reverse
-from .models import *
+from .models import User
 
 
 
@@ -12,7 +12,7 @@ class TestRegisterLogin(TestCase):
                                  user_type='customer',
                                  first_name='mohammad',
                                  last_name='ebrahimzadeh',
-                                 phone='9199887402',
+                                 phone=9199887402,
                                  password='1234')
 
     def test_register_user(self):

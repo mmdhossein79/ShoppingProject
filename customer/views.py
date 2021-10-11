@@ -1,15 +1,19 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
-from django.urls import reverse
+from django.core.mail import send_mail
+from django.urls import reverse,reverse_lazy
 from django.views import generic
 from django.db.models import F
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView
+from rest_framework.authtoken.models import Token
+
 from order.models import Order, Cart
-from .forms import UserForms, UserLogin, EditProfile, ChangePasswordForm, AddressProfileForm
+from .forms import UserForms, UserLogin, EditProfile, ChangePasswordForm, AddressProfileForm, EmailForgot
 from .models import User
 import django.contrib.auth
 from django.contrib.auth.decorators import user_passes_test
@@ -17,7 +21,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
 
 from .models import User
 from django.contrib.auth import authenticate, login
@@ -57,10 +61,10 @@ def user_login(request):
 def edit_profile(request, user_id):
     std = get_object_or_404(User, id=user_id)
     form = EditProfile(instance=std)
-    form_address =AddressProfileForm(instance=std)
+    form_address = AddressProfileForm(instance=std)
     if request.method == 'POST':
         form = EditProfile(request.POST, instance=std)
-        form_address = AddressProfileForm(request.POST,instance=std)
+        form_address = AddressProfileForm(request.POST, instance=std)
         if form.is_valid() and form_address.is_valid():
             form.save()
             form_address.save()
@@ -117,7 +121,49 @@ def list_users(request):
     return render(request, 'customer/list_user.html', context=context)
 
 
-def ChangePasswordView(request):
+def change_password_view(request, token):
+    if request.method == 'POST':
+        form = ChangePasswordForm(data=request.POST)
+        context = {}
+        try:
+            user = Token.objects.get(key = token).user
+            passwords =form.data
+            if passwords['password1'] != passwords['password2'] or not check_password(passwords['password'],
+                                                                                      user.password):
+                context = {'error':'password does not match'}
+            else:
+                user.set_password(passwords['password2'])
+                user.save()
+                return redirect(reverse('customer:login'))
+        except Token.DoesNotExist:
+            context = {'error': 'user does not exist'}
+        return render(request, 'customer/email-password.html', context=context)
     form = ChangePasswordForm()
     context = {'form': form}
-    return render(request, 'customer/change.html', context=context)
+    return render(request, 'customer/email-password.html', context=context)
+
+
+def forgot_password_view(request):
+    if request.method == 'GET':
+        form = EmailForgot()
+        context = {'form': form}
+
+        return render(request, 'customer/ForgotPassword.html', context=context)
+    else:
+        form = EmailForgot(data=request.POST)
+        try:
+            email = form.data.get('email')
+            user = User.objects.get(email=email)
+            context = {'status':'change password link has been sent to your email'}
+            # print(reverse('customer:change_password', args=[user.get_token()]))
+            send_mail(
+                'forgot password',
+                'http://127.0.0.1:8000'+reverse_lazy('customer:change_password', args=[user.get_token()]),
+                'online@gmail.com',
+                [user.email],
+                fail_silently=False
+            )
+        except User.DoesNotExist:
+            context = {'status': 'user does not exist'}
+            print('user does not exist')
+        return render(request, 'customer/ForgotPassword.html', context=context)

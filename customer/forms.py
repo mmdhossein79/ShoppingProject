@@ -36,6 +36,12 @@ class AddressProfileForm(forms.ModelForm):
         model = Address
         fields =['address']
 
+class EmailForgot(forms.ModelForm):
+    class Meta:
+        model = User
+        fields =['email']
+
+
 # class Changeform(forms.ModelForm):
 #     NewPassword = 'NewPassword '
 #     NewPasswordConfirm = 'NewPasswordConfirm'
