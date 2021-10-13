@@ -7,7 +7,7 @@ from .models import User
 
 class TestRegisterLogin(TestCase):
     def setUp(self) -> None:
-        User.objects.create_user(username='mmd',
+        User.objects.create_user(username='mohammad49517879@gmail.com',
                                  email='mohammad49517879@gmail.com',
                                  user_type='customer',
                                  first_name='mohammad',
@@ -19,7 +19,7 @@ class TestRegisterLogin(TestCase):
         request_data = {'username': 'mmd@gmail.com',
                         'first_name': 'mmd',
                         'last_name': 'ebi',
-                        'phone': '9199887402',
+                        'phone': 9199887402,
                         'password1': '1234',
                         'password2': '1234'}
         response = self.client.post(reverse('register_login'), data=request_data)
@@ -29,7 +29,7 @@ class TestRegisterLogin(TestCase):
         request_data_2 = {'username': 'mmd@gmail.com',
                         'first_name': 'mmd',
                         'last_name': 'ebi',
-                        'phone': '9199887402',
+                        'phone': 9199887402,
                         'password1': '1234',
                         'password2': '1234'}
         response_2 = self.client.post(reverse('register_login'), data=request_data_2)

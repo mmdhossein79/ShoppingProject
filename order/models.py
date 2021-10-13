@@ -37,9 +37,8 @@ ORDER_STATUS = (
 )
 
 METHOD = (
-    ("Cash On Delivery", "Cash On Delivery"),
-    ("Khalti", "Khalti"),
-    ("Esewa", "Esewa"),
+    ("Cash On Delivery", "پرداخت درب منزل"),
+    ("Cash On Internet", "پرداخت اینترنتی"),
 )
 
 

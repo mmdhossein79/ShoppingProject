@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django.urls import reverse,reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.db.models import F
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView
 from rest_framework.authtoken.models import Token
 
-from order.models import Order, Cart
+from order.models import Order, Cart, Gift_Cart
 from .forms import UserForms, UserLogin, EditProfile, ChangePasswordForm, AddressProfileForm, EmailForgot
 from .models import User
 import django.contrib.auth
@@ -69,13 +69,6 @@ def edit_profile(request, user_id):
             form.save()
             form_address.save()
 
-            # if form.cleaned_data['new_password'] == form.cleaned_data['new_passwordconfirm']:
-            #     user.set_password(form.cleaned_data['new_password'])
-            #     user.save()
-            #     login(request, user)
-            # else:
-            #     messages.error(request, "PASSWORD INCORRECT")
-            #     return redirect('customer:edit')
             return redirect('product:home')
     context = {
         'form': form,
@@ -85,34 +78,16 @@ def edit_profile(request, user_id):
     return render(request, 'customer/edit.html', context=context)
 
 
-# def change_password(request, user_id):
-#     std = get_object_or_404(User, id=user_id)
-#     form = Changeform(instance=std)
-#     if request.method == 'POST':
-#         form = Changeform(request.POST, instance=std)
-#         if form.is_valid():
-#             user = form.save()
-#             if form.cleaned_data['new_password'] == form.cleaned_data['new_passwordconfirm']:
-#                 user.set_password(form.cleaned_data['new_password'])
-#                 user.save()
-#                 login(request, user)
-#             else:
-#                 messages.error(request, "PASSWORD INCORRECT")
-#                 return redirect('customer:edit')
-#             return redirect('product:home')
-#     context = {
-#         'form': form,
-#         'std_id': std.id,
-#     }
-#     return render(request, 'customer/change.html', context=context)
-
-
 def profile(request, user_id):
-    # context = super().get_context_data(**kwargs)
     profile_user = User.objects.get(id=user_id)
     orders = Order.objects.filter(customer__id=user_id)
-    context = {'profile': profile_user, 'orders': orders}
-    return render(request, 'customer/profile.html', context=context)
+    try:
+        gift_cart = Gift_Cart.objects.get(user__id=user_id)
+        context = {'profile': profile_user, 'orders': orders, 'gift_cart': gift_cart}
+        return render(request, 'customer/profile.html', context=context)
+    except:
+        context = {'profile': profile_user, 'orders': orders, }
+        return render(request, 'customer/profile.html', context=context)
 
 
 def list_users(request):
@@ -126,11 +101,10 @@ def change_password_view(request, token):
         form = ChangePasswordForm(data=request.POST)
         context = {}
         try:
-            user = Token.objects.get(key = token).user
-            passwords =form.data
-            if passwords['password1'] != passwords['password2'] or not check_password(passwords['password'],
-                                                                                      user.password):
-                context = {'error':'password does not match'}
+            user = Token.objects.get(key=token).user
+            passwords = form.data
+            if passwords['password1'] != passwords['password2']:
+                context = {'error': 'password does not match'}
             else:
                 user.set_password(passwords['password2'])
                 user.save()
@@ -154,11 +128,11 @@ def forgot_password_view(request):
         try:
             email = form.data.get('email')
             user = User.objects.get(email=email)
-            context = {'status':'change password link has been sent to your email'}
+            context = {'status': 'change password link has been sent to your email'}
             # print(reverse('customer:change_password', args=[user.get_token()]))
             send_mail(
                 'forgot password',
-                'http://127.0.0.1:8000'+reverse_lazy('customer:change_password', args=[user.get_token()]),
+                'http://127.0.0.1:8000' + reverse_lazy('customer:change_password', args=[user.get_token()]),
                 'online@gmail.com',
                 [user.email],
                 fail_silently=False

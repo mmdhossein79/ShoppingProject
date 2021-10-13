@@ -32,13 +32,17 @@
                     if (data.next){
 
                         let next_page = $('<button/>',{
+
                             text : 'next_page',
                             click : function (){
                                 get_product(data.next)
+
                             }
+
                         })
 
                         $('.product-container').append(next_page)
+
 
                     }
 
@@ -75,9 +79,5 @@ get_product('http://127.0.0.1:8000/api-auth/product/')
         </div>
     </div>
 
-
-    {#    {% block js %}#}
-    {#        <script src="{% static 'customer/js/home.js' %}"></script>#}
-    {#    {% endblock %}#}
 {% endblock %}
 

@@ -23,13 +23,13 @@ class EditProfile(forms.ModelForm):
 
 
 class ChangePasswordForm(forms.ModelForm):
-    password = forms.CharField(max_length=150, required=True, widget=forms.PasswordInput())
+    #password = forms.CharField(max_length=150, required=True, widget=forms.PasswordInput())
     new_password = forms.CharField(max_length=150, required=True, widget=forms.PasswordInput())
     new_password_check = forms.CharField(max_length=150, required=True, widget=forms.PasswordInput())
 
     class Meta:
         model = User
-        fields = ['password', 'new_password', 'new_password_check', ]
+        fields = ['new_password', 'new_password_check', ]
 
 class AddressProfileForm(forms.ModelForm):
     class Meta:
@@ -42,12 +42,3 @@ class EmailForgot(forms.ModelForm):
         fields =['email']
 
 
-# class Changeform(forms.ModelForm):
-#     NewPassword = 'NewPassword '
-#     NewPasswordConfirm = 'NewPasswordConfirm'
-#     new_password = forms.CharField(max_length=1000, widget=forms.PasswordInput(), label=NewPassword)
-#     new_passwordconfirm = forms.CharField(max_length=1000, widget=forms.PasswordInput(), label=NewPasswordConfirm)
-#
-#     class Meta:
-#         model = User
-#         fields = [' new_password', 'new_passwordconfirm']
