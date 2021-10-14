@@ -9,12 +9,27 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'phone', 'email', 'password', 'first_name', 'last_name',)
+        fields = ('id', 'username', 'phone', 'email', 'password', 'first_name', 'last_name')
+
+    # def validate_username(self, value):
+    #     if not value:
+    #         raise serializers.ValidationError("First username can't be empty!")
+    #     return value
+    #
+    # def validate_phone(self, value):
+    #     if not value:
+    #         raise serializers.ValidationError("First phone can't be empty!")
+    #     return value
+    #
+    # def validate_username(self, value):
+    #     if not value:
+    #         raise serializers.ValidationError("First username can't be empty!")
+    #     return value
 
 
 # Register Serializer
 class RegisterSerializer(serializers.ModelSerializer):
-    # confirm_password = serializers.CharField()
+
     class Meta:
         model = User
         fields = ('id', 'username', 'phone', 'email', 'password', 'first_name', 'last_name', 'user_type')

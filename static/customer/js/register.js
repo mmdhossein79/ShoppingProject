@@ -25,9 +25,10 @@ $(document).ready(function () {
                 console.log("SUCCESS :");
                 alert('SUCCESS :')
             },
-            error: function (e) {
-                console.log("ERROR : ", e);
-                alert("ERROR :  ")
+            error: function (xhr) {
+                console.log("ERROR : ", xhr);
+                console.log(xhr.status+' '+xhr.responseText)
+                alert("ERROR : "+xhr.status+' '+xhr.responseText)
             }
         });
 

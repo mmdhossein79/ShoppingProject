@@ -34,7 +34,7 @@ class RegisterAPI(generics.GenericAPIView):
 class ChangeCustomerPassword(APIView, mixins.UpdateModelMixin):
     # taking token and checking valuable
     query_set = {}
-    # permission_classes = [IsAuthenticated]
+
     serializer_class = ChangeCustomerPasswordSerializer
 
     def post(self, request, *args, **kwargs):

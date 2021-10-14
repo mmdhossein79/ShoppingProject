@@ -4,20 +4,23 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <script>
-    function get_product(url){
-                $.ajax({
-            method: 'GET',
-            url: url,
-            success: function (data) {
-                console.log('success');
-                console.log(data)
-                for (const obj of data.results) {
+        function get_product(url) {
+            $.ajax({
+                method: 'GET',
+                url: url,
+                success: function (data) {
+                    console.log('success');
+                    $('.product-container').html("");
+                    $('.pagination').html("");
+                    for (const obj of data.results) {
+                        console.log(obj);
                         let product_name = obj.title;
                         let category = obj.category;
                         let initial_price = obj.marked_price;
                         let final_price = obj.selling_price;
                         let url = `{% url 'product:productdetail' 'none'%}`
-                        url = url.replace("none",obj.slug)
+                        url = url.replace("none", obj.slug)
+
                         const card =
                             `<div class="col-md-3 card">
                                     <div class="m-4">
@@ -27,57 +30,63 @@
                                        <a href=${url} class="btn btn-primary">Add To Cart</a>
                                     </div>
                             </div>`;
-                        $('.product-container').html(card)
-
-                    if (data.next){
-
-                        let next_page = $('<button/>',{
-
-                            text : 'next_page',
-                            click : function (){
-                                get_product(data.next)
-
-                            }
-
-                        })
-
-                        $('.product-container').append(next_page)
+                        $('.product-container').append(card)
 
 
                     }
+                                            if (data.next) {
 
-                    if (data.previous){
+                            let next_page = $('<button/>', {
+                                text: 'next_page',
+                                click: function () {
+                                    get_product(data.next)
+                                }
 
-                        let previous_page = $('<button/>',{
-                            text : 'previous_page',
-                            click : function (){
-                                get_product(data.previous)
-                            }
-                        })
+                            })
+                            $('.pagination').append(next_page)
 
-                        $('.product-container').append(previous_page)
+                        }
 
-                    }
-                    }
+                        if (data.previous) {
+
+                            let previous_page = $('<button/>', {
+                                text: 'previous_page',
+
+                                click: function () {
+                                    get_product(data.previous)
+                                }
+                            })
+
+                            $('.pagination').append(previous_page)
+
+                        }
 
 
-            },
-            error: function () {
-                console.log('error');
-            }
-        })
+                },
+                error: function () {
+                    console.log('error');
+                }
+            })
 
 
-    }
-get_product('http://127.0.0.1:8000/api-auth/product/')
+        }
+
+        get_product('http://127.0.0.1:8000/api-auth/product/')
     </script>
 
     <div class="container-fluid">
         <hr>
         <div class="row mt-3 product-container" id="product-container">
-
         </div>
+
     </div>
+        <div class="container-fluid">
+        <hr>
+        <div class="row mt-3 pagination" >
+        </div>
+
+    </div>
+
 
 {% endblock %}
 
