@@ -13,7 +13,7 @@ from django.views.generic import FormView
 from rest_framework.authtoken.models import Token
 
 from order.models import Order, Cart, Gift_Cart
-from .forms import UserForms, UserLogin, EditProfile, ChangePasswordForm, AddressProfileForm, EmailForgot
+from .forms import UserForms, UserLogin, EditProfile, ChangePasswordForm, EmailForgot
 from .models import User
 import django.contrib.auth
 from django.contrib.auth.decorators import user_passes_test
@@ -61,19 +61,16 @@ def user_login(request):
 def edit_profile(request, user_id):
     std = get_object_or_404(User, id=user_id)
     form = EditProfile(instance=std)
-    form_address = AddressProfileForm(instance=std)
+
     if request.method == 'POST':
         form = EditProfile(request.POST, instance=std)
-        form_address = AddressProfileForm(request.POST, instance=std)
-        if form.is_valid() and form_address.is_valid():
+        if form.is_valid():
             form.save()
-            form_address.save()
 
             return redirect('product:home')
     context = {
         'form': form,
         'std_id': std.id,
-        'address': form_address
     }
     return render(request, 'customer/edit.html', context=context)
 

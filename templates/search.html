@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
- {% block content %}
-     {% if searched %}
-          <h1>Your search for{{ searched }}</h1>
-         <br/>
-         {% for clas in product %}
-             <a href="{% url 'product:productdetail' clas.slug %}" class="btn btn-dark" style="margin-left: 37.5%;width:25%;margin-top: 10px" role="button"> {{ clas }}</a>
-         {% endfor %}
-     {% else %}
-         <h1>Hey! You Forgot To Search Some Name... </h1>
-     {% endif %}
+{% block content %}
+    {% if searched %}
+        <div class="row">
+            {% for p in  product %}
+                <div class="col-md-3">
+                    <h>{{ p.slug }}</h>
+                    <div class="m-4">
+                        <h4><a href="{% url 'product:productdetail' p.slug %}">{{ p.title }}</a></h4>
+                        <img src="{{ p.image.url }}" alt="" class="img-fluid" style="height: 2500; object-fit: cover;">
+                        <p class="mt-3">Price: <strike>Rs. {{ p.marked_price }}</strike> Rs. {{ p.selling_price }}</p>
+                        <a href="{% url 'order:addtocart' p.id %}" class="btn btn-primary">Add To Cart</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1>Hey! You Forgot To Search Some Name... </h1>
+    {% endif %}
 
- {% endblock %}
+{% endblock %}

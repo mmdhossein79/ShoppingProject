@@ -57,6 +57,9 @@ class User(AbstractUser):
                                  message="شماره تماس باید با فرمت ۹۱۲۷۸۹۳۴۵۶ وارد شود")
     username = models.CharField(verbose_name='username', max_length=60, unique=True)
     phone = models.CharField(validators=[phone_regex], max_length=10, unique=True)
+    address = models.CharField(max_length=400, blank=True)
+    city = models.CharField(max_length=400, blank=True)
+    post_code = models.CharField(max_length=100, blank=True)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
     first_name = models.CharField(max_length=30)
@@ -97,10 +100,6 @@ class User(AbstractUser):
     def promoteUserToDepartmentAdmin(self):
         self.is_staff = True
 
-
-class Address(models.Model):
-    address = models.CharField(max_length=400, blank=False, null=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 

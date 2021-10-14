@@ -74,8 +74,7 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a class="btn  but" style="width:100%" href="{% url 'customer:profile' user.id %}" type="submit">Back
-                        To Profile
+                    <a class="btn  but" style="width:100%" href="{% url 'customer:profile' user.id %}" type="button" data-toggle="modal" data-target="#exampleModal">Change Password
                     </a>
                 </div>
             </div>
@@ -86,9 +85,5 @@
             </div>
         </div>
     </div>
-    <div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Launch demo modal
-        </button>
-    </div>
+
 {% endblock %}
